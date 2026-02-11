@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Employee Leave Application</title>
+
+<style>
+    body { font-family: Arial; }
+    .error { color: red; font-size: 13px; }
+</style>
+
+<script>
+function validateLeaveForm() {
+
+    let valid = true;
+
+    // REGEX
+    const nameRegex = /^[A-Za-z ]+$/;
+    const empIdRegex = /^EMP-\d{4}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const dateRegex = /^\d{2}-\d{2}-\d{4}$/;
+
+    // CLEAR ERRORS
+    document.querySelectorAll(".error").forEach(e => e.innerHTML = "");
+
+    // VALUES
+    let name = document.getElementById("ename").value;
+    let empId = document.getElementById("eid").value;
+    let email = document.getElementById("email").value;
+    let fromDate = document.getElementById("from").value;
+    let toDate = document.getElementById("to").value;
+    let leaveType = document.getElementsByName("leave");
+    let reason = document.getElementById("reason").value;
+    let approval = document.getElementById("approval").checked;
+
+    // VALIDATIONS
+    if (!nameRegex.test(name)) {
+        document.getElementById("nameErr").innerHTML = "Only alphabets allowed";
+        valid = false;
+    }
+
+    if (!empIdRegex.test(empId)) {
+        document.getElementById("idErr").innerHTML = "Format: EMP-1001";
+        valid = false;
+    }
+
+    if (!emailRegex.test(email)) {
+        document.getElementById("emailErr").innerHTML = "Invalid email";
+        valid = false;
+    }
+
+    if (!dateRegex.test(fromDate)) {
+        document.getElementById("fromErr").innerHTML = "DD-MM-YYYY";
+        valid = false;
+    }
+
+    if (!dateRegex.test(toDate)) {
+        document.getElementById("toErr").innerHTML = "DD-MM-YYYY";
+        valid = false;
+    }
+
+    if (![...leaveType].some(l => l.checked)) {
+        document.getElementById("leaveErr").innerHTML = "Select leave type";
+        valid = false;
+    }
+
+    if (reason.length < 10) {
+        document.getElementById("reasonErr").innerHTML = "Minimum 10 characters required";
+        valid = false;
+    }
+
+    if (!approval) {
+        document.getElementById("approvalErr").innerHTML = "Manager approval required";
+        valid = false;
+    }
+
+    return valid;
+}
+</script>
+</head>
+
+<body>
+
+<h2>Employee Leave Application Form</h2>
+
+<form onsubmit="return validateLeaveForm()">
+
+    Employee Name:
+    <input type="text" id="ename">
+    <div id="nameErr" class="error"></div><br>
+
+    Employee ID:
+    <input type="text" id="eid">
+    <div id="idErr" class="error"></div><br>
+
+    Official Email:
+    <input type="text" id="email">
+    <div id="emailErr" class="error"></div><br>
+
+    From Date:
+    <input type="text" id="from" placeholder="DD-MM-YYYY">
+    <div id="fromErr" class="error"></div><br>
+
+    To Date:
+    <input type="text" id="to" placeholder="DD-MM-YYYY">
+    <div id="toErr" class="error"></div><br>
+
+    Leave Type:
+    <input type="radio" name="leave"> CL
+    <input type="radio" name="leave"> SL
+    <input type="radio" name="leave"> PL
+    <div id="leaveErr" class="error"></div><br>
+
+    Reason:
+    <textarea id="reason"></textarea>
+    <div id="reasonErr" class="error"></div><br>
+
+    <input type="checkbox" id="approval"> Manager Approval
+    <div id="approvalErr" class="error"></div><br>
+
+    <button type="submit">Submit Request</button>
+
+</form>
+
+</body>
+</html>

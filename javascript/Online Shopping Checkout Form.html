@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shopping Checkout Form</title>
+
+<style>
+    body { font-family: Arial; }
+    .error { color: red; font-size: 13px; }
+</style>
+
+<script>
+function validateCheckoutForm() {
+
+    let valid = true;
+
+    // REGEX
+    const nameRegex = /^[A-Za-z ]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const mobileRegex = /^[6-9]\d{9}$/;
+    const pinRegex = /^\d{6}$/;
+
+    // CLEAR ERRORS
+    document.querySelectorAll(".error").forEach(e => e.innerHTML = "");
+
+    // VALUES
+    let name = document.getElementById("cname").value;
+    let email = document.getElementById("email").value;
+    let mobile = document.getElementById("mobile").value;
+    let pin = document.getElementById("pin").value;
+    let address = document.getElementById("address").value;
+    let payment = document.getElementsByName("payment");
+    let slot = document.getElementById("slot").value;
+    let terms = document.getElementById("terms").checked;
+
+    // VALIDATIONS
+    if (!nameRegex.test(name)) {
+        document.getElementById("nameErr").innerHTML = "Only alphabets and spaces allowed";
+        valid = false;
+    }
+
+    if (!emailRegex.test(email)) {
+        document.getElementById("emailErr").innerHTML = "Invalid email format";
+        valid = false;
+    }
+
+    if (!mobileRegex.test(mobile)) {
+        document.getElementById("mobileErr").innerHTML = "Invalid Indian mobile number";
+        valid = false;
+    }
+
+    if (!pinRegex.test(pin)) {
+        document.getElementById("pinErr").innerHTML = "PIN must be 6 digits";
+        valid = false;
+    }
+
+    if (address.length < 10) {
+        document.getElementById("addressErr").innerHTML = "Minimum 10 characters required";
+        valid = false;
+    }
+
+    if (![...payment].some(p => p.checked)) {
+        document.getElementById("paymentErr").innerHTML = "Select payment mode";
+        valid = false;
+    }
+
+    if (slot === "") {
+        document.getElementById("slotErr").innerHTML = "Select delivery slot";
+        valid = false;
+    }
+
+    if (!terms) {
+        document.getElementById("termsErr").innerHTML = "Accept terms & conditions";
+        valid = false;
+    }
+
+    return valid;
+}
+</script>
+</head>
+
+<body>
+
+<h2>Online Shopping Checkout Form</h2>
+
+<form onsubmit="return validateCheckoutForm()">
+
+    Customer Name:
+    <input type="text" id="cname">
+    <div id="nameErr" class="error"></div><br>
+
+    Email:
+    <input type="text" id="email">
+    <div id="emailErr" class="error"></div><br>
+
+    Mobile Number:
+    <input type="text" id="mobile">
+    <div id="mobileErr" class="error"></div><br>
+
+    PIN Code:
+    <input type="text" id="pin">
+    <div id="pinErr" class="error"></div><br>
+
+    Address:
+    <textarea id="address"></textarea>
+    <div id="addressErr" class="error"></div><br>
+
+    Payment Mode:
+    <input type="radio" name="payment"> Card
+    <input type="radio" name="payment"> UPI
+    <input type="radio" name="payment"> COD
+    <div id="paymentErr" class="error"></div><br>
+
+    Delivery Slot:
+    <select id="slot">
+        <option value="">Select</option>
+        <option>Morning</option>
+        <option>Afternoon</option>
+        <option>Evening</option>
+    </select>
+    <div id="slotErr" class="error"></div><br>
+
+    <input type="checkbox" id="terms"> I accept Terms & Conditions
+    <div id="termsErr" class="error"></div><br>
+
+    <button type="submit">Place Order</button>
+
+</form>
+
+</body>
+</html>

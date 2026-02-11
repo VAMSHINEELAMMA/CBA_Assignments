@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Registration Form</title>
+
+<style>
+    body { font-family: Arial; }
+    .error { color: red; font-size: 13px; }
+</style>
+
+<script>
+function validateStudentForm() {
+
+    let valid = true;
+
+    // REGEX
+    const nameRegex = /^[A-Za-z ]{3,}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const rollRegex = /^STU-\d{4}$/;
+    const mobileRegex = /^[6-9]\d{9}$/;
+    const dobRegex = /^\d{2}-\d{2}-\d{4}$/;
+
+    // VALUES
+    let name = document.getElementById("sname").value;
+    let email = document.getElementById("semail").value;
+    let roll = document.getElementById("roll").value;
+    let mobile = document.getElementById("mobile").value;
+    let dob = document.getElementById("dob").value;
+    let mode = document.getElementById("mode").value;
+
+    let gender = document.getElementsByName("gender");
+    let courses = document.querySelectorAll(".course:checked");
+
+    // CLEAR ERRORS
+    document.querySelectorAll(".error").forEach(e => e.innerHTML = "");
+
+    // VALIDATION
+    if (!nameRegex.test(name)) {
+        document.getElementById("nameErr").innerHTML = "Min 3 chars, alphabets only";
+        valid = false;
+    }
+
+    if (!emailRegex.test(email)) {
+        document.getElementById("emailErr").innerHTML = "Invalid email format";
+        valid = false;
+    }
+
+    if (!rollRegex.test(roll)) {
+        document.getElementById("rollErr").innerHTML = "Format: STU-1234";
+        valid = false;
+    }
+
+    if (!mobileRegex.test(mobile)) {
+        document.getElementById("mobileErr").innerHTML = "Invalid Indian mobile";
+        valid = false;
+    }
+
+    if (!dobRegex.test(dob)) {
+        document.getElementById("dobErr").innerHTML = "DD-MM-YYYY format";
+        valid = false;
+    }
+
+    if (![...gender].some(g => g.checked)) {
+        document.getElementById("genderErr").innerHTML = "Select gender";
+        valid = false;
+    }
+
+    if (courses.length === 0) {
+        document.getElementById("courseErr").innerHTML = "Select at least one course";
+        valid = false;
+    }
+
+    if (mode === "") {
+        document.getElementById("modeErr").innerHTML = "Select course mode";
+        valid = false;
+    }
+
+    return valid;
+}
+</script>
+</head>
+
+<body>
+
+<h2>Student Course Registration</h2>
+
+<form onsubmit="return validateStudentForm()">
+
+    Name:
+    <input type="text" id="sname">
+    <div id="nameErr" class="error"></div><br>
+
+    Email:
+    <input type="text" id="semail">
+    <div id="emailErr" class="error"></div><br>
+
+    Roll No:
+    <input type="text" id="roll">
+    <div id="rollErr" class="error"></div><br>
+
+    Mobile:
+    <input type="text" id="mobile">
+    <div id="mobileErr" class="error"></div><br>
+
+    DOB:
+    <input type="text" id="dob" placeholder="DD-MM-YYYY">
+    <div id="dobErr" class="error"></div><br>
+
+    Gender:
+    <input type="radio" name="gender"> Male
+    <input type="radio" name="gender"> Female
+    <div id="genderErr" class="error"></div><br>
+
+    Courses:
+    <input type="checkbox" class="course"> Java
+    <input type="checkbox" class="course"> Python
+    <div id="courseErr" class="error"></div><br>
+
+    Course Mode:
+    <select id="mode">
+        <option value="">Select</option>
+        <option>Online</option>
+        <option>Offline</option>
+    </select>
+    <div id="modeErr" class="error"></div><br>
+
+    <button type="submit">Submit</button>
+
+</form>
+
+</body>
+</html>

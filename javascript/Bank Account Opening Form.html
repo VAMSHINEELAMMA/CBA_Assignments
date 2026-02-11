@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bank Account Opening Form</title>
+
+<style>
+    body { font-family: Arial; }
+    .error { color: red; font-size: 13px; }
+</style>
+
+<script>
+function validateBankForm() {
+
+    let valid = true;
+
+    // REGEX
+    const nameRegex = /^[A-Za-z ]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+    const aadhaarRegex = /^\d{12}$/;
+    const mobileRegex = /^[6-9]\d{9}$/;
+
+    // CLEAR ERRORS
+    document.querySelectorAll(".error").forEach(e => e.innerHTML = "");
+
+    // VALUES
+    let name = document.getElementById("fname").value;
+    let email = document.getElementById("email").value;
+    let pan = document.getElementById("pan").value;
+    let aadhaar = document.getElementById("aadhaar").value;
+    let mobile = document.getElementById("mobile").value;
+    let account = document.getElementsByName("account");
+    let services = document.querySelectorAll(".service:checked");
+    let branch = document.getElementById("branch").value;
+
+    // VALIDATIONS
+    if (!nameRegex.test(name)) {
+        document.getElementById("nameErr").innerHTML = "Only alphabets and spaces allowed";
+        valid = false;
+    }
+
+    if (!emailRegex.test(email)) {
+        document.getElementById("emailErr").innerHTML = "Invalid email format";
+        valid = false;
+    }
+
+    if (!panRegex.test(pan)) {
+        document.getElementById("panErr").innerHTML = "Format: ABCDE1234F";
+        valid = false;
+    }
+
+    if (!aadhaarRegex.test(aadhaar)) {
+        document.getElementById("aadhaarErr").innerHTML = "12 digit Aadhaar only";
+        valid = false;
+    }
+
+    if (!mobileRegex.test(mobile)) {
+        document.getElementById("mobileErr").innerHTML = "Invalid Indian mobile number";
+        valid = false;
+    }
+
+    if (![...account].some(a => a.checked)) {
+        document.getElementById("accountErr").innerHTML = "Select account type";
+        valid = false;
+    }
+
+    if (services.length === 0) {
+        document.getElementById("serviceErr").innerHTML = "Select at least one service";
+        valid = false;
+    }
+
+    if (branch === "") {
+        document.getElementById("branchErr").innerHTML = "Select branch";
+        valid = false;
+    }
+
+    return valid;
+}
+</script>
+</head>
+
+<body>
+
+<h2>Bank Account Opening Form</h2>
+
+<form onsubmit="return validateBankForm()">
+
+    Full Name:
+    <input type="text" id="fname">
+    <div id="nameErr" class="error"></div><br>
+
+    Email ID:
+    <input type="text" id="email">
+    <div id="emailErr" class="error"></div><br>
+
+    PAN Number:
+    <input type="text" id="pan">
+    <div id="panErr" class="error"></div><br>
+
+    Aadhaar Number:
+    <input type="text" id="aadhaar">
+    <div id="aadhaarErr" class="error"></div><br>
+
+    Mobile Number:
+    <input type="text" id="mobile">
+    <div id="mobileErr" class="error"></div><br>
+
+    Account Type:
+    <input type="radio" name="account"> Savings
+    <input type="radio" name="account"> Current
+    <div id="accountErr" class="error"></div><br>
+
+    Services Required:
+    <input type="checkbox" class="service"> ATM
+    <input type="checkbox" class="service"> Net Banking
+    <input type="checkbox" class="service"> Cheque Book
+    <div id="serviceErr" class="error"></div><br>
+
+    Branch:
+    <select id="branch">
+        <option value="">Select</option>
+        <option>Hyderabad</option>
+        <option>Bangalore</option>
+        <option>Chennai</option>
+    </select>
+    <div id="branchErr" class="error"></div><br>
+
+    <button type="submit">Open Account</button>
+
+</form>
+
+</body>
+</html>

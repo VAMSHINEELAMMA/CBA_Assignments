@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Job Application Form</title>
+
+<style>
+    body { font-family: Arial; }
+    .error { color: red; font-size: 13px; }
+</style>
+
+<script>
+function validateJobForm() {
+
+    let valid = true;
+
+    // REGEX
+    const nameRegex = /^[A-Za-z ]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Password: min 6 chars, 1 uppercase, 1 digit (LOOKAHEAD)
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
+    const mobileRegex = /^[6-9]\d{9}$/;
+    const experienceRegex = /^\d+$/;
+
+    // CLEAR ERRORS
+    document.querySelectorAll(".error").forEach(e => e.innerHTML = "");
+
+    // VALUES
+    let name = document.getElementById("aname").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+    let mobile = document.getElementById("mobile").value;
+    let experience = document.getElementById("exp").value;
+    let role = document.getElementById("role").value;
+    let skills = document.querySelectorAll(".skill:checked");
+    let locations = document.getElementById("location");
+
+    // VALIDATIONS
+    if (!nameRegex.test(name)) {
+        document.getElementById("nameErr").innerHTML = "Only alphabets and spaces allowed";
+        valid = false;
+    }
+
+    if (!emailRegex.test(email)) {
+        document.getElementById("emailErr").innerHTML = "Invalid email format";
+        valid = false;
+    }
+
+    if (!passwordRegex.test(password)) {
+        document.getElementById("passErr").innerHTML =
+            "Min 6 chars, 1 uppercase & 1 digit required";
+        valid = false;
+    }
+
+    if (!mobileRegex.test(mobile)) {
+        document.getElementById("mobileErr").innerHTML = "Invalid Indian mobile number";
+        valid = false;
+    }
+
+    if (!experienceRegex.test(experience)) {
+        document.getElementById("expErr").innerHTML = "Enter numeric value only";
+        valid = false;
+    }
+
+    if (role === "") {
+        document.getElementById("roleErr").innerHTML = "Select job role";
+        valid = false;
+    }
+
+    if (skills.length === 0) {
+        document.getElementById("skillErr").innerHTML = "Select at least one skill";
+        valid = false;
+    }
+
+    let selectedLocations = Array.from(locations.options).some(opt => opt.selected);
+    if (!selectedLocations) {
+        document.getElementById("locErr").innerHTML = "Select preferred location";
+        valid = false;
+    }
+
+    return valid;
+}
+</script>
+</head>
+
+<body>
+
+<h2>Online Job Application Form</h2>
+
+<form onsubmit="return validateJobForm()">
+
+    Applicant Name:
+    <input type="text" id="aname">
+    <div id="nameErr" class="error"></div><br>
+
+    Email ID:
+    <input type="text" id="email">
+    <div id="emailErr" class="error"></div><br>
+
+    Password:
+    <input type="password" id="password">
+    <div id="passErr" class="error"></div><br>
+
+    Mobile Number:
+    <input type="text" id="mobile">
+    <div id="mobileErr" class="error"></div><br>
+
+    Experience (Years):
+    <input type="text" id="exp">
+    <div id="expErr" class="error"></div><br>
+
+    Job Role:
+    <select id="role">
+        <option value="">Select</option>
+        <option>Software Engineer</option>
+        <option>Data Analyst</option>
+        <option>Tester</option>
+    </select>
+    <div id="roleErr" class="error"></div><br>
+
+    Skills:
+    <input type="checkbox" class="skill"> Java
+    <input type="checkbox" class="skill"> Python
+    <input type="checkbox" class="skill"> SQL
+    <div id="skillErr" class="error"></div><br>
+
+    Preferred Location:
+    <select id="location" multiple>
+        <option>Bangalore</option>
+        <option>Hyderabad</option>
+        <option>Chennai</option>
+        <option>Pune</option>
+        <option>Gurgaon</option>
+        <option>Noida</option>
+        <option>Remote</option>
+        <option>Any</option>
+    </select>
+    <div id="locErr" class="error"></div><br>
+
+    <button type="submit">Apply</button>
+
+</form>
+
+</body>
+</html>
